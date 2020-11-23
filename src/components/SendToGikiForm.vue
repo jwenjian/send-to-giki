@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import API from '@gikiapp/sdk'
 
 export default {
   name: "send-to-giki-form",
@@ -70,19 +70,18 @@ export default {
         tags: ["bookmark", "send-to-giki"],
       };
       console.log(payload);
-      const client = axios.create({
-        baseURL: "https://giki.app/api",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Basic ${this.token}`,
-        },
-      });
-      client
-        .post("talks/create", payload)
+      const api = new API({ env: 'production', token: this.token})
+      api.save("talks", payload)
         .then((resp) => {
-          this.finished = true;
-          this.success = true;
-          console.log(resp);
+          if (resp.ok) {
+            this.finished = true;
+            this.success = true;
+            console.log(resp);
+          } else {
+            this.finished = true;
+            this.success = false;
+            console.error(`send to giki.app failed: ${resp.status}`)
+          }
         })
         .catch((err) => {
           this.finished = true;
