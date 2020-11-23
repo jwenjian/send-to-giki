@@ -74,9 +74,9 @@ export default {
       api.save("talks", payload)
         .then((resp) => {
           if (resp.ok) {
-          this.finished = true;
-          this.success = true;
-          console.log(resp);
+            this.finished = true;
+            this.success = true;
+            console.log(resp);
           } else {
             this.finished = true;
             this.success = false;
